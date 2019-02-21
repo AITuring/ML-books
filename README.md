@@ -1,4 +1,4 @@
-#<p align="center">我的读书笔记</p>
+# <p align="center">我的读书笔记</p>
 ### 1. 深度学习入门-基于python的理论与实现读书笔记
 #### 正在读
 ![](/深度学习入门：基于Python的理论与实现/front1.png)
