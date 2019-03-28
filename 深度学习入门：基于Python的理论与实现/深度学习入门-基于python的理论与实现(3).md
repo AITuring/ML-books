@@ -258,6 +258,27 @@ Y=identity_function(A3)
 **注：输出层所用的激活函数，要根据求解问题的性质决定。一般地，回 归问题可以使用恒等函数，二元分类问题可以使用sigmoid函数， 多元分类问题可以使用softmax函数**
 
 #### 3.4.3 代码实现小结
+之前已经实现了3层网络的设计，现在重新整理一下。按照神经网络的实现惯例，只把权重记为大写字母W1，其他都用小写字母表示。
+```python
+def init_network():
+  network={}
+  network['W1']=np,array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]]) 
+  network['b1'] = np.array([0.1, 0.2, 0.3])    
+  network['W2'] = np.array([[0.1, 0.4], [0.2, 0.5], [0.3, 0.6]])    
+  network['b2'] = np.array([0.1, 0.2])    
+  network['W3'] = np.array([[0.1, 0.3], [0.2, 0.4]])
+  network['b3'] = np.array([0.1, 0.2])
+  return network
+
+
+
+def forward(network,x):
+  W1,W2,W3 = network['W1'], network['W2'], network['W3']
+  b1,b2,b3=network['b1'], network['b2'], network['b3']
+
+  
+
+```
 
 
 
