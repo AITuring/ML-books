@@ -280,5 +280,57 @@ def forward(network,x):
 
 ```
 
+### 3.5 输出层的设计
+神经网络可以用在分类和回归上。一般，分类问题用softmax，回归问题用恒等函数。
+
+#### 3.5.1 恒等函数与softmax函数
+恒等函数将输入按原样输出。所以在输出层用恒等函数，输入信号会原封不动输出。将恒等函数处理过程用神经网络图表示如下：
+
+![](softmax.png)
+
+softmax函数表达式如下：
+
+$$y_k = \frac{exp(a_k)}{\sum^n_{i=1}exp(a_i)}$$
+
+上式表示输出层一共有$n$个神经元，计算第$k$个神经元的输出$y_k$。softmax函数的分子是输入信号$a_k$的指数，分母是所有输入信号的指数之和。下面是softmax的示意图，可以看到函数的输出通过箭头与所有的输入信号相连。
+
+![](softmax1.png)
+
+下面是softmax的实现：
+
+```python
+def softmax(a):
+  exp_a=np.exp(a)
+  sum_exp_a=np.sum(exp_a)
+  y=exp_a / sum_exp_a
+  return y
+```
+上面的代码虽然实现了softmax，但是在计算机运算中可能会发生溢出。函数实现中要进行指数运算，但此时指数的值很容易变得非常大，如果在超大值之间进行除法运算，结果会出现“不确定”的情况。
+
+因此，需要对softmax进行改进：
+$$y_k = \frac{exp(a_k)}{\sum^n_{i=1}exp(a_i)}$$
+$$= \frac{C \cdot \ exp(a_k)}{C \cdot \sum^n_{i=1}exp(a_i)}$$
+$$=\frac{exp(a_k)+\log C}{\sum^n_{i=1} exp(a_i+ \log C)}$$
+$$=\frac{exp(a_k+C_1)}{\sum^n_{i=1} exp(a_i+C_1)}$$
+
+**注：C是一个任意常数**
+
+通过上式能够说明，加上或减去某个常数并不会改变运算的结果，$C_1$可以用任何值，但为了防止溢出，一般使用输入信号中的最大值。
+
+对上面的代码进行改进：
+
+```python
+def softmax(a):
+  c=np.max(a)
+  exp_a=np.exp(a-c) #溢出对策
+  sum_exp_a=np.sum(exp_a)
+  y=exp_a / sum_exp_a
+  return y
+```
+#### 3.5.2 softmax函数的特征
+
+softmax输出的是0到1之间的实数，并且函数的输出值总和为1。因此，每一个输入对应的softmax输出就是它的概率。
+
+### 3.6 手写字体识别
 
 
