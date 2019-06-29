@@ -332,5 +332,94 @@ def softmax(a):
 softmax输出的是0到1之间的实数，并且函数的输出值总和为1。因此，每一个输入对应的softmax输出就是它的概率。
 
 ### 3.6 手写字体识别
+#### 3.6.1 MNIST数据集
+MNIST数据集是由0到9的数字构成的，如下图所示：
+
+![](MNIST.png)
+
+训练图像有6万张，测试图像有1万张。MNIST的图像数据是28像素X28像素的灰度图像，各个像素的取值是在0到255之间，每一个图像数据都相应标有“1”，“2”等标签。
+
+书中提供了一个能够将MNIST数据集转化成Numpy数组的脚本`mnist.py`。使用其中的`load_mnist()`函数，就可以读入MNIST数据：
+
+```python
+import sys, os
+from mnist import load_mnist
+
+(x_train,t_train),(x_test) = load_mnist(flatten=True,normalize=False)
+
+# 输出各个数据的形状
+print(x_train.shape) # (60000,784)
+print(t_train.shape) # (6000,)
+print(x_test.shape) # (10000,784)
+print(t_test.shape) # (10000,)
+```
+
+`load_data()`函数以“（训练图像，训练标签）”，“（测试图像，测试标签）”的形式返回读取的MNIST数据。`load_data()`有三参数：
+1. normalize设置是否将输入图片正规化为0.0~1.0的值。如果设置为False，输入图像的像素会保持原来的0~255。
+2. flatt设置是否将图片展成一维，也就是784个元素构成的一维数组。如果设置为False，则输入图像是1*28*28的三维数组。
+3. 第三个参数one_hot_label是将标签设置为onehot表示。onehot表示仅将正确的标签标记为1，其余标记为0。  
+
+导入数据后，接下来显示MNIST的图像。图像的显示使用PIL模块。
+
+```python
+import sys,os
+sys.path.append(os.pardir)
+import numpy as np
+from dataset.mnist import load_mnist
+from PIL import Image
+
+def img_show(img):
+  pil_img = Image.fromarray(np.uint8(img))
+  pil_img.show()
+
+(x_train,t_train),(x_test,t_test) = load_mnist(flatten=True,normalize=False)
+
+img = x_train[0]
+label = t_train[0]
+print(label) # 5
+
+print(img.shape) # (784,)
+img = img.reshape(28,28) # 将图像的形状变成原来尺寸
+
+img_show(img)
+```
+需要注意的是，`flatten=True` 时读入图像是以一维Numpy数组形式保存的。所以，显示图像时需要把它变成28像素*28像素的形状，可以通过`reshape()`方法的参数指定期望的形状。此外还需将Numpy数组转成PIL用的数据对象，此转换需要`Image.fromarray()`完成。
+
+#### 3.6.2 神经网络的推理处理
+
+神经网络的输入层有784（28*28）个神经元，输出层有10（数字0到9）个神经元。此外，这个神经网络有两个隐藏层。这两个隐藏层的神经元属于可以自己进行设置。这里设置第一个隐藏层有50个，第二个有100个。
+
+下面定义`get_data()`、`init_network()`、`predict()`这三个函数：
+
+```python
+def get_data():
+  (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, flatten=True, one_hot_label=False)
+  return x_test, t_test
+```
+
+```python
+def init_network():
+  with open("sample_weight.pkl",'rb') as f:
+    network = pickle.load(f)
+  return network
+```
+
+```python
+def predict(network, x):
+  W1, W2, W3 = network['W1'], network['W2'], network['W3']
+  b1, b2, b3 = network['b1'], network['b2'], network['b3']
+  a1= np.dot(x, W1)+ b1
+  z1 = sigmoid(a1) 
+  a2= np.dot(z1, W2)+ b2
+  z2 = sigmoid(a2)
+  a3= np.dot(z2, W3)+ b3
+  y = softmax(a3)
+
+  return y  
+
+
+```
+
+
 
 
