@@ -1,6 +1,6 @@
 [toc]
 # 深度学习入门-基于python的理论与实现(1)
-![](front.png)
+![](dl_from_scratch_front.png)
 ## 第一章：python入门
 ### 1.5 NumPy
 #### 1.5.2 生成NumPy数组
@@ -14,7 +14,7 @@
 ```
 #### 1.5.5 广播
 NumPy中,形状不同的数组之间也可以进行运算。如图：
-![](broadcast1.png)
+![](dl_from_scratch_broadcast1.png)
 
 另外一个例子：
 ```python
@@ -25,7 +25,7 @@ array([[10,40],
         30,40])
 ```
 在上面的例子中，如下图所示你，一维数组Y变成了和二维数组相同的形状你，然后再以对应原始的方式进行运算。
-![](broadcast2.png)
+![](dl_from_scratch_broadcast2.png)
 
 ### 1.6 Matplotlib
 #### 1.6.1 绘制简单图形
@@ -42,7 +42,7 @@ plt.plot(x,y)
 plt.show()
 ```
 这里用NumPy的arange方法生成了[0,0.1,0.2,...,5.8n,5.9]的数据，设为x。对x的各个元素，应用NumPy的sin函数np.sin(),将x,y的数据传递给plt.plot方法你，然后绘制图形。最后通过plt.show()显示图形，运行上述代码后，图形如下：
-![](sin.png)
+![](dl_from_scratch_sin.png)
 
 #### 1.6.2 pyplot的功能
 在上面sin函数中，增加一些代码：
@@ -69,7 +69,7 @@ plt.show()
 
 ```
 结果如图：
-![](sincos.png)
+![](dl_from_scratch_sincos.png)
 
 #### 1.6.3 显示图像
 pyplot中`imshow()`方法用来显示图形你，`imread()`用来读入图像。
